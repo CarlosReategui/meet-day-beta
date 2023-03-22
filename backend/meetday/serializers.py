@@ -4,7 +4,6 @@ from rest_framework import serializers
 
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from django.db.models import Prefetch
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -23,7 +22,7 @@ class MeetParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = MeetParticipant
         fields = '__all__'
-        read_only_fields = ['meet']
+        # read_only_fields = ['meet']
 
 
 class MeetSerializer(serializers.ModelSerializer):
