@@ -1,11 +1,8 @@
 import axios from "axios";
-import { BackendUrls } from "./backend-urls";
+// import { BackendUrls } from "./backend-urls";
 import { tokenService } from ".";
 
-const BASE_URL =
-  !process.env.REACT_APP_ENV || process.env.REACT_APP_ENV === "development"
-    ? BackendUrls.DEV_API_URL
-    : BackendUrls.PROD_API_URL;
+const BASE_URL = "https://meet-day-beta.onrender.com/";
 
 export const ApiWithToken = axios.create({
   baseURL: BASE_URL,
