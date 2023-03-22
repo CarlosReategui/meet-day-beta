@@ -114,6 +114,7 @@ export const MeetPage = () => {
           bench: parseInt(lifter.bench || "0"),
           deadlift: parseInt(lifter.deadlift || "0"),
           weight: parseInt(lifter.weight || "0"),
+          meet: currentMeetCookie.id,
         };
         try {
           await clientService.lifters.put(updatedLifter, lifter.id);
