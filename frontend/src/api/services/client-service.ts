@@ -16,6 +16,8 @@ export const clientService = {
     get: async () => ApiWithToken.get(clientService.meets.uri),
     getParticipantsByMeetId: async (meetId: number) =>
       ApiWithToken.get(`${clientService.meets.uri}${meetId}/participants/`),
+    delete: async (id: number) =>
+      ApiWithToken.delete(`${clientService.meets.uri}${id}/`),
   },
   lifters: {
     uri: "/api/participants/",

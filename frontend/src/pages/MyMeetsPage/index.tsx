@@ -16,6 +16,8 @@ import { TMeet } from "../../types";
 import { MeetCard } from "../../components/MeetCard";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
+import { openConfirmModal } from "@mantine/modals";
 
 export const MyMeetsPage = () => {
   const form = useForm({
@@ -45,14 +47,40 @@ export const MyMeetsPage = () => {
 
   const addMeet = async () => {
     if (!form.validate().hasErrors) {
-      const response = await clientService.meets.post({
-        gender: form.values.gender,
-        title: form.values.title,
-        location: form.values.location,
-      });
-      setMeets([...meets, response.data]);
-      close();
+      try {
+        const response = await clientService.meets.post({
+          gender: form.values.gender,
+          title: form.values.title,
+          location: form.values.location,
+        });
+        setMeets([...meets, response.data]);
+        close();
+      } catch (error) {
+        notifications.show({ title: "Error", message: "Something went wrong" });
+      }
     }
+  };
+
+  const deleteMeet = async (id: number) => {
+    openConfirmModal({
+      title: "Delete meet",
+      children: "Are you sure you want to delete this meet?",
+      labels: {
+        confirm: "Delete",
+        cancel: "Cancel",
+      },
+      onConfirm: async () => {
+        try {
+          await clientService.meets.delete(id);
+          setMeets(meets.filter((meet) => meet.id !== id));
+        } catch (error) {
+          notifications.show({
+            title: "Error",
+            message: "Something went wrong",
+          });
+        }
+      },
+    });
   };
 
   return (
@@ -90,15 +118,11 @@ export const MyMeetsPage = () => {
         <Skeleton height={300} />
       ) : (
         <Grid>
-          {meets && (
-            <>
-              {meets.map((meet) => (
-                <Grid.Col key={meet.id} span={12} md={6}>
-                  <MeetCard meet={meet} />
-                </Grid.Col>
-              ))}
-            </>
-          )}
+          {meets.map((meet) => (
+            <Grid.Col key={meet.id} span={12} md={6}>
+              <MeetCard meet={meet} deleteMeet={deleteMeet} />
+            </Grid.Col>
+          ))}
         </Grid>
       )}
     </Container>

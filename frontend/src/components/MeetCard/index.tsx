@@ -1,19 +1,26 @@
-import { Badge, Button, Card, Table, Text, Title } from "@mantine/core";
+import { Badge, Button, Card, Group, Table, Text, Title } from "@mantine/core";
 import { TMeet } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { useCurrentMeet } from "../../context";
+import { HiOutlineTrash } from "react-icons/hi";
 
 type Props = {
   meet: TMeet;
+  deleteMeet: (id: number) => void;
 };
 
-export const MeetCard = ({ meet }: Props) => {
+export const MeetCard = ({ meet, deleteMeet }: Props) => {
   const navigate = useNavigate();
   const { setCurrentMeetCookie } = useCurrentMeet();
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Title order={4}>{meet.title}</Title>
+      <Group position="apart">
+        <Title order={4}>{meet.title}</Title>
+        <Button size="xs" color="red" onClick={() => deleteMeet(meet.id)}>
+          <HiOutlineTrash />
+        </Button>
+      </Group>
       <Table mt="xs">
         <tbody>
           <tr>
