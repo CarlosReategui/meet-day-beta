@@ -1,11 +1,12 @@
 import { Button, Container, Flex, Modal, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import { openConfirmModal } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { clientService } from "../../api";
-import { AppBreadcrumbs } from "../../components";
+import { AppBreadcrumbs, Standings } from "../../components";
 import { Lifter } from "../../components";
 import { useCurrentMeet } from "../../context";
 import { TBackendLifter, TLifter } from "../../types";
@@ -58,7 +59,11 @@ export const MeetPage = () => {
     if (!lifters) getLifters();
   }, [currentMeetCookie, lifters, form]);
 
-  const [opened, { open, close }] = useDisclosure(false);
+  const [addLifterOpened, { open: openAddLifter, close: closeAddLifter }] =
+    useDisclosure(false);
+
+  const [standingsOpened, { open: openStandings, close: closeStandings }] =
+    useDisclosure(false);
 
   if (!currentMeetCookie) {
     navigate("/my-meets");
@@ -90,7 +95,7 @@ export const MeetPage = () => {
             posByPoints: "0",
           };
           setLifters([...lifters, cardLifter]);
-          onClose();
+          onAddLifterClose();
         } catch (error) {
           notifications.show({
             title: "Error",
@@ -101,9 +106,9 @@ export const MeetPage = () => {
       }
     };
 
-    const onClose = () => {
+    const onAddLifterClose = () => {
       form.setFieldValue("lifterName", "");
-      close();
+      closeAddLifter();
     };
 
     const saveAll = async () => {
@@ -128,9 +133,35 @@ export const MeetPage = () => {
       });
     };
 
+    const deleteLifter = (id: number) => {
+      openConfirmModal({
+        title: "Delete lifter",
+        children: "Are you sure you want to delete this lifter?",
+        labels: {
+          confirm: "Delete",
+          cancel: "Cancel",
+        },
+        onConfirm: async () => {
+          try {
+            await clientService.lifters.delete(id);
+            setLifters(lifters.filter((lifter) => lifter.id !== id));
+          } catch {
+            notifications.show({
+              title: "Error",
+              message: "Something went wrong. Please try again.",
+            });
+          }
+        },
+      });
+    };
+
     return (
       <Container>
-        <Modal opened={opened} onClose={onClose} title="Add lifter">
+        <Modal
+          opened={addLifterOpened}
+          onClose={onAddLifterClose}
+          title="Add lifter"
+        >
           <TextInput label="Name" {...form.getInputProps("lifterName")} />
           <Button
             size="xs"
@@ -152,13 +183,34 @@ export const MeetPage = () => {
             },
           ]}
         />
+        <Modal
+          opened={standingsOpened}
+          onClose={closeStandings}
+          title="Standings"
+          size="auto"
+        >
+          <Standings lifters={lifters} />
+        </Modal>
         <Container px={0}>
           <Flex gap="md">
-            <Button color="green" variant="outline" size="xs" onClick={open}>
+            <Button
+              color="green"
+              variant="outline"
+              size="xs"
+              onClick={openAddLifter}
+            >
               + add lifter
             </Button>
             <Button size="xs" color="green" variant="outline" onClick={saveAll}>
               save all
+            </Button>
+            <Button
+              size="xs"
+              color="orange"
+              variant="outline"
+              onClick={openStandings}
+            >
+              standings
             </Button>
           </Flex>
           {lifters &&
@@ -170,6 +222,7 @@ export const MeetPage = () => {
                   id={lifter.id}
                   setLifters={setLifters}
                   gender={currentMeetCookie.gender}
+                  deleteLifter={deleteLifter}
                 />
               </div>
             ))}

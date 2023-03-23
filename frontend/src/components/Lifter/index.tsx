@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
-import { Card, Grid, InputBase, TextInput } from "@mantine/core";
+import { Button, Card, Grid, InputBase, TextInput } from "@mantine/core";
 import { TLifter } from "../../types";
+import { HiOutlineTrash } from "react-icons/hi";
 
 type Props = {
   id: number;
@@ -8,9 +9,17 @@ type Props = {
   lifters: TLifter[];
   setLifters: Dispatch<SetStateAction<TLifter[]>>;
   gender: string;
+  deleteLifter: (id: number) => void;
 };
 
-export const Lifter = ({ id, lifter, lifters, setLifters, gender }: Props) => {
+export const Lifter = ({
+  id,
+  lifter,
+  lifters,
+  setLifters,
+  gender,
+  deleteLifter,
+}: Props) => {
   const setLifter = useCallback(
     (
       event: React.ChangeEvent<HTMLInputElement>,
@@ -104,7 +113,21 @@ export const Lifter = ({ id, lifter, lifters, setLifters, gender }: Props) => {
   }, [lifter.squat, lifter.bench, lifter.deadlift, lifter.weight]);
 
   return (
-    <Card mt="lg" p="lg" radius="md" withBorder>
+    <Card
+      mt="lg"
+      p="lg"
+      radius="md"
+      withBorder
+      style={{ position: "relative" }}
+    >
+      <Button
+        size="xs"
+        style={{ position: "absolute", top: 5, right: 5 }}
+        color="red"
+        onClick={() => deleteLifter(id)}
+      >
+        <HiOutlineTrash />
+      </Button>
       <Grid>
         <Grid.Col md={3} span={6}>
           <TextInput
@@ -203,4 +226,3 @@ export const Lifter = ({ id, lifter, lifters, setLifters, gender }: Props) => {
     </Card>
   );
 };
-// export const hola = 2;

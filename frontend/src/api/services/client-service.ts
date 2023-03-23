@@ -23,5 +23,7 @@ export const clientService = {
       ApiWithToken.post(clientService.lifters.uri, data),
     put: async (data: any, id: number) =>
       ApiWithToken.put(`${clientService.lifters.uri}${id}/`, data),
+    delete: async (id: number) =>
+      ApiWithToken.delete(`${clientService.lifters.uri}${id}/`),
   },
 };
