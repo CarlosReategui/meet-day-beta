@@ -1,4 +1,11 @@
-import { Button, Container, Flex, Modal, TextInput } from "@mantine/core";
+import {
+  Button,
+  Container,
+  Flex,
+  Modal,
+  Skeleton,
+  TextInput,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { openConfirmModal } from "@mantine/modals";
@@ -213,7 +220,7 @@ export const MeetPage = () => {
               standings
             </Button>
           </Flex>
-          {lifters &&
+          {lifters ? (
             lifters.map((lifter, index) => (
               <div key={index}>
                 <Lifter
@@ -225,7 +232,10 @@ export const MeetPage = () => {
                   deleteLifter={deleteLifter}
                 />
               </div>
-            ))}
+            ))
+          ) : (
+            <Skeleton height={200} mt="lg" />
+          )}
         </Container>
       </Container>
     );
