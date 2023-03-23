@@ -10,9 +10,8 @@ export const Standings = ({ lifters }: Props) => {
   const [sortedLifters, setSortedLifters] = useState<TLifter[]>(null!);
 
   useEffect(() => {
-    console.log("hola");
     const sorted = lifters.slice().sort((a, b) => {
-      return parseInt(b.total || "0") - parseInt(a.total || "0");
+      return parseFloat(b.total || "0") - parseFloat(a.total || "0");
     });
     setSortedLifters(sorted);
   }, [lifters]);
@@ -44,26 +43,26 @@ export const Standings = ({ lifters }: Props) => {
               <td>
                 {index === 0
                   ? "-"
-                  : parseInt(sortedLifters[0].total || "0") -
-                    parseInt(lifter.total || "0")}
+                  : parseFloat(sortedLifters[0].total || "0") -
+                    parseFloat(lifter.total || "0")}
               </td>
               <td>
                 {index <= 1
                   ? "-"
-                  : parseInt(sortedLifters[1].total || "0") -
-                    parseInt(lifter.total || "0")}
+                  : parseFloat(sortedLifters[1].total || "0") -
+                    parseFloat(lifter.total || "0")}
               </td>
               <td>
                 {index <= 2
                   ? "-"
-                  : parseInt(sortedLifters[2].total || "0") -
-                    parseInt(lifter.total || "0")}
+                  : parseFloat(sortedLifters[2].total || "0") -
+                    parseFloat(lifter.total || "0")}
               </td>
               <td>
                 {index === 0
                   ? "0"
-                  : parseInt(sortedLifters[index - 1].total || "0") -
-                    parseInt(lifter.total || "0")}
+                  : parseFloat(sortedLifters[index - 1].total || "0") -
+                    parseFloat(lifter.total || "0")}
               </td>
             </tr>
           ))}

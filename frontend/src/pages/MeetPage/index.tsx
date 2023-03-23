@@ -122,10 +122,10 @@ export const MeetPage = () => {
       lifters.forEach(async (lifter) => {
         const updatedLifter = {
           name: lifter.name,
-          squat: parseInt(lifter.squat || "0"),
-          bench: parseInt(lifter.bench || "0"),
-          deadlift: parseInt(lifter.deadlift || "0"),
-          weight: parseInt(lifter.weight || "0"),
+          squat: parseFloat(lifter.squat || "0"),
+          bench: parseFloat(lifter.bench || "0"),
+          deadlift: parseFloat(lifter.deadlift || "0"),
+          weight: parseFloat(lifter.weight || "0"),
           meet: currentMeetCookie.id,
         };
         try {
