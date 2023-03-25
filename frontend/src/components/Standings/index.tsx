@@ -21,6 +21,7 @@ export const Standings = ({ lifters }: Props) => {
       <thead>
         <tr>
           <th>Name</th>
+          <th>BW</th>
           <th>SQ</th>
           <th>BP</th>
           <th>DL</th>
@@ -36,6 +37,7 @@ export const Standings = ({ lifters }: Props) => {
           sortedLifters.map((lifter, index) => (
             <tr key={lifter.id}>
               <td>{lifter.name}</td>
+              <td>{lifter.weight}</td>
               <td>{lifter.squat}</td>
               <td>{lifter.bench}</td>
               <td>{lifter.deadlift}</td>

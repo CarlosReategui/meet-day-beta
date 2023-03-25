@@ -1,9 +1,8 @@
-import { Button, Flex, Header, Text, useMantineTheme } from "@mantine/core";
+import { Button, Flex, Header } from "@mantine/core";
 import { useAuth } from "../../context";
 
 export const AppHeader = () => {
   const { logout } = useAuth();
-  const theme = useMantineTheme();
   return (
     <Header height={75} mb="xl">
       <Flex align="center" direction="column" mt="md">

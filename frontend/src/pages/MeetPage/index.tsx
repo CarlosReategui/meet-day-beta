@@ -138,6 +138,11 @@ export const MeetPage = () => {
           console.log(error);
         }
       });
+      notifications.show({
+        title: "Success",
+        message: "Lifters updated successfully.",
+        color: "green",
+      });
     };
 
     const deleteLifter = (id: number) => {
